@@ -16,10 +16,10 @@ class AppConfig(BaseModel):
 
 config = AppConfig()
 
-def get_llm(model_name: str = "gemini-2.5-flash") -> ChatGoogleGenerativeAI:
+def get_llm(model_name: str = "gemini-3.8-flash") -> ChatGoogleGenerativeAI:
     """
     Initializes and returns the primary LLM engine.
-    Gemini 2.5 Flash provides native multimodal processing with a generous free tier.
+    Gemini 3.8 Flash provides native multimodal processing with a generous free tier.
     """
     config.validate_keys()
     
