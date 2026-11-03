@@ -46,5 +46,7 @@ def itinerary_agent_node(state: TravelState) -> dict:
     Weather: {state.get('weather_info', 'None')}
     Constraints: {state.get('trip_constraints', 'None')}
     """
-    response = llm.invoke([SystemMessage(content=prompt)])
+    sys_msg = SystemMessage(content="You are an expert travel planner. Create a daily itinerary based on the gathered travel data.")
+    user_msg = HumanMessage(content=prompt)
+    response = llm.invoke([sys_msg, user_msg])
     return {"itinerary_plan": {"draft": response.content}}

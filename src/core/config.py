@@ -7,6 +7,7 @@ load_dotenv()
 
 class AppConfig(BaseModel):
     gemini_api_key: str = os.getenv("GEMINI_API_KEY", "")
+    gemini_model: str = os.getenv("GEMINI_MODEL", "gemini-flash-lite-latest")
     tavily_api_key: str = os.getenv("TAVILY_API_KEY", "")
     log_level: str = os.getenv("LOG_LEVEL", "INFO")
     
@@ -16,16 +17,17 @@ class AppConfig(BaseModel):
 
 config = AppConfig()
 
-def get_llm(model_name: str = "gemini-3.8-flash") -> ChatGoogleGenerativeAI:
+def get_llm(model_name: str | None = None) -> ChatGoogleGenerativeAI:
     """
     Initializes and returns the primary LLM engine.
-    Gemini 3.8 Flash provides native multimodal processing with a generous free tier.
+    Uses GEMINI_MODEL env var or gemini-flash-lite-latest by default.
     """
     config.validate_keys()
+    selected_model = model_name or config.gemini_model
     
     return ChatGoogleGenerativeAI(
-        model=model_name,
+        model=selected_model,
         google_api_key=config.gemini_api_key,
         temperature=0.2,
-        max_retries=2
+        max_retries=5
     )
