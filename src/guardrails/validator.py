@@ -12,7 +12,7 @@ def validate_input_node(state: TravelState) -> dict:
     LangGraph node: Validates the user query for travel relevance and safety.
     Returns state updates based on the validation decision.
     """
-    llm = get_llm(model_name="gemini-3.8-flash")
+    llm = get_llm()
     structured_llm = llm.with_structured_output(GuardrailDecision)
     
     prompt = ChatPromptTemplate.from_messages([
@@ -34,4 +34,7 @@ def validate_input_node(state: TravelState) -> dict:
             "rejection_reason": f"BLOCKED: {decision.reason}"
         }
     
-    return {}
+    return {
+        "hitl_approved": True,
+        "rejection_reason": None
+    }

@@ -21,7 +21,7 @@ def supervisor_node(state: TravelState) -> dict:
     LangGraph node: Analyzes intent and dynamically routes to specialist agents.
     Replaces manual workflow definitions with intelligent orchestration.
     """
-    llm = get_llm(model_name="gemini-2.5-flash")
+    llm = get_llm()
     structured_llm = llm.with_structured_output(SupervisorDecision)
     
     prompt = ChatPromptTemplate.from_messages([
@@ -32,7 +32,7 @@ def supervisor_node(state: TravelState) -> dict:
         - If they ask about climate, temperature, or packing, select 'weather'.
         - If they mention cost limits or tracking expenses, select 'budget'.
         
-        Extract any constraints (e.g., {"destination": "Dubai", "duration": "4 days"}).
+        Extract any constraints (e.g., {{"destination": "Dubai", "duration": "4 days"}}).
         """),
         ("user", "{user_query}")
     ])
