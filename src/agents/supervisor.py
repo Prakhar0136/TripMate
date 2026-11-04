@@ -1,8 +1,11 @@
-from pydantic import BaseModel, Field
+from typing import Literal
+
 from langchain_core.prompts import ChatPromptTemplate
+from pydantic import BaseModel, Field
+
 from src.core.config import get_llm
 from src.core.state import TravelState
-from typing import Literal
+
 
 class SupervisorDecision(BaseModel):
     selected_agents: list[
@@ -46,6 +49,8 @@ def supervisor_node(state: TravelState) -> dict:
         "trip_constraints": decision.trip_constraints
     }
 
+AVAILABLE_SPECIALISTS = {"flight", "weather", "hotel"}
+
 def route_to_specialists(state: TravelState) -> list[str]:
     """
     Conditional edge function for LangGraph.
@@ -53,8 +58,9 @@ def route_to_specialists(state: TravelState) -> list[str]:
     If no specialists are needed, it routes directly to the itinerary agent.
     """
     selected = state.get("selected_agents", [])
+    valid_selected = [agent for agent in selected if agent in AVAILABLE_SPECIALISTS]
     
-    if not selected:
+    if not valid_selected:
         return ["itinerary"]
         
-    return selected
+    return valid_selected

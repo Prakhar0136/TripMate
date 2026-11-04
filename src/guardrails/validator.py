@@ -1,7 +1,9 @@
-from pydantic import BaseModel, Field
 from langchain_core.prompts import ChatPromptTemplate
+from pydantic import BaseModel, Field
+
 from src.core.config import get_llm
 from src.core.state import TravelState
+
 
 class GuardrailDecision(BaseModel):
     is_valid: bool = Field(description="True if the request is a valid travel planning query, False otherwise.")
