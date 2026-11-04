@@ -1,6 +1,8 @@
 from langchain_core.messages import HumanMessage, SystemMessage
+
 from src.core.config import get_llm
 from src.core.state import TravelState
+
 
 def final_response_node(state: TravelState) -> dict:
     """

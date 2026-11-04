@@ -27,7 +27,7 @@ def search_hotels(location: str, check_in: str = "", check_out: str = "") -> lis
                     "href": r.get("href", ""),
                     "body": r.get("body", "")
                 })
-    except Exception as e: 
+    except Exception as e:  # noqa: BLE001 
         results.append({
             "error": f"Search failed: {e!s}",
             "title": f"Fallback recommendations for {location}",
